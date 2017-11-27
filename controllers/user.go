@@ -262,8 +262,8 @@ func (this *UserController) GetAvatar() {
 	}
 
 	//拼接一个完整的路径
-	avatar_url := "http://101.200.170.171:8080/" + fileId
-
+	avatar_url := models.AddDomain2Url(fileId)
+	//avatar_url := "http://39.106.110.44:8080/" + fileId
 	resp.Data.Url = avatar_url
 	return
 }
