@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"iHome_go_1/models"
+	_ "time"
 )
 
 type GetHouseInfoController struct {
@@ -26,17 +27,33 @@ type HouseInfo struct {
 type RespHouseInfo struct {
 	Errno  string      `json:"errno"`
 	Errmsg string      `json:"errmsg"`
-	Data   []HouseInfo `json:"data"`
+	Data   interface{} `json:"data"`
 }
 
+func Struct2house(this *models.House) interface{} {
+	house_info := map[string]interface{}{
+		"address":     this.Address,
+		"area_name":   this.Area.Name,
+		"ctime":       this.Ctime,
+		"house_id":    this.Id,
+		"img_url":     this.Images,
+		"order_count": this.Order_count,
+		"price":       this.Price,
+		"room_count":  this.Room_count,
+		"title":       this.Title,
+		"user_avatar": models.AddDomain2Url(this.User.Avatar_url),
+	}
+	return house_info
+}
 func (this *GetHouseInfoController) RetData(resp interface{}) {
 	//给客户端返回json数据
 	this.Data["json"] = resp
 	//将json写回客户端
 	this.ServeJSON()
 }
+
 func (this *GetHouseInfoController) GetHouseInfo() {
-	resp := RegResp{Errno: models.RECODE_OK, Errmsg: models.RecodeText(models.RECODE_OK)}
+	resp := RespHouseInfo{Errno: models.RECODE_OK, Errmsg: models.RecodeText(models.RECODE_OK)}
 	defer this.RetData(&resp)
 	//通过session得到user_id
 	resp_user_id := this.GetSession("user_id")
@@ -46,12 +63,22 @@ func (this *GetHouseInfoController) GetHouseInfo() {
 
 	o := orm.NewOrm()
 
+	houses := []models.House{}
+	house_list := []interface{}{}
 	qs := o.QueryTable("house")
-	var resqs orm.QuerySeter
-	resqs = qs.Filter("user_id", resp_user_id)
-	fmt.Printf("resqs ===>%+v", resqs)
+	qs.Filter("user_id", resp_user_id).All(&houses)
+	//fmt.Printf("resqs ===>%+v", houses)
+	for _, house := range houses {
+		o.LoadRelated(&house, "Area", "User", "Images", "Facilities")
+		housedata := Struct2house(&house)
+		house_list = append(house_list, housedata)
+
+	}
+
+	data := map[string]interface{}{}
+	data["houses"] = house_list
 
 	//返回json数据
-
+	resp.Data = data
 	return
 }
