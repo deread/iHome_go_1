@@ -14,6 +14,7 @@ func init() {
 	beego.Router("api/v1.0/sessions", &controllers.UserController{}, "post:Login")
 	//请求session[get]
 	beego.Router("/api/v1.0/session", &controllers.SessionController{}, "get:Get")
+	beego.Router("/api/v1.0/session", &controllers.SessionController{}, "delete:Delete")
 	//请求地域[get]
 	beego.Router("/api/v1.0/areas", &controllers.AreaController{}, "get:GetAreas")
 	//请求用户基本信息[get]
