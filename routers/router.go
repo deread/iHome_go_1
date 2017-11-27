@@ -23,9 +23,9 @@ func init() {
 	//请求更新用户名[put]
 	beego.Router("api/v1.0/user/name", &controllers.UserController{}, "put:UpdateUsername")
 	//实名认证检查[get]
-	//beego.Router("api/v1.0/user/auth", &controllers.UserController{}, "put:GetUsetAuth")
+	beego.Router("api/v1.0/user/auth", &controllers.AuthController{}, "get:AuthCheck")
 	//更新实名认证信息[post]
-	//beego.Router("api/v1.0/user/auth", &controllers.UserController{}, "post:PostUsetAuth")
+	beego.Router("api/v1.0/user/auth", &controllers.AuthController{}, "post:UpdateAuthinfo")
 	//发布房源信息[post]
 	//beego.Router("api/v1.0/houses", &controllers.HousesController{}, "post:ReleaseHouses")
 	//上传房源图片信息[post]？为房源ID
@@ -44,6 +44,6 @@ func init() {
 	//beego.Router("api/v1.0/orders/?/comment", &controllers.PutOrderCommController{}, "put:PutOrderComm")
 
 	//上传文件头像
-	beego.Router("api/v1.0/user/houses", &controllers.HousesController{}, "get:GetHouses")
+	//beego.Router("api/v1.0/user/houses", &controllers.HousesController{}, "get:GetHouses")
 
 }
