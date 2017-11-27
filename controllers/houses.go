@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"iHome_go_1/models"
+	//"strconv"
 	_ "time"
 )
 
@@ -30,10 +31,27 @@ type RespHouseInfo struct {
 	Data   interface{} `json:"data"`
 }
 
+type Area struct {
+	Id   int    `json:"aid"`                  //区域编号
+	Name string `orm:"size(32)" json:"aname"` //区域名字
+}
+
+//根据areaid-->AreaName
+func GetAreaName(myid interface{}) (RAreaName string) {
+	o := orm.NewOrm()
+	num := myid.(int)
+	//num, _ := strconv.Atoi(myid.(string))
+	area := models.Area{Id: num}
+	o.Read(&area)
+
+	RAreaName = area.Name
+	return
+}
 func Struct2house(this *models.House) interface{} {
 	house_info := map[string]interface{}{
-		"address":     this.Address,
-		"area_name":   this.Area.Name,
+		"address":   this.Address,
+		"area_name": GetAreaName(this.Area.Id),
+		//"ctime":       this.Ctime.Format("2006-01-02 15:04:05"),
 		"ctime":       this.Ctime,
 		"house_id":    this.Id,
 		"img_url":     this.Images,
@@ -76,7 +94,7 @@ func (this *GetHouseInfoController) GetHouseInfo() {
 
 	data := map[string]interface{}{}
 	data["houses"] = house_list
-
+	fmt.Printf("housesInfo--->%+v", data)
 	//返回json数据
 	resp.Data = data
 	return
