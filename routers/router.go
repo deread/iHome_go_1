@@ -43,7 +43,4 @@ func init() {
 	//用户评价订单信息 [put] ?-->订单Id
 	//beego.Router("api/v1.0/orders/?/comment", &controllers.PutOrderCommController{}, "put:PutOrderComm")
 
-	//上传文件头像
-	//beego.Router("api/v1.0/user/houses", &controllers.HousesController{}, "get:GetHouses")
-
 }
