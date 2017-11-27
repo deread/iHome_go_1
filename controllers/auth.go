@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"iHome/models"
+	"iHome_go_1/models"
 )
 
 type Baseinfo struct {
