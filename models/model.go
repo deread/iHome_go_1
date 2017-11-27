@@ -47,6 +47,57 @@ var HOME_PAGE_MAX_HOUSES int = 5
 //房屋列表页面每页显示条目数
 var HOUSE_LIST_PAGE_CAPACITY int = 2
 
+// 返回单个房屋的详细信息
+func (this *House) To_one_house_desc() interface{} {
+
+	// 组织返回客户端的JSON数据
+	house_desc := map[string]interface{}{
+		"hid":         this.Id,
+		"user_id":     this.User.Id,
+		"user_name":   this.User.Name,
+		"user_avatar": AddDomain2Url(this.User.Avatar_url),
+		"title":       this.Title,
+		"price":       this.Price,
+		"address":     this.Address,
+		"room_count":  this.Room_count,
+		"acreage":     this.Acreage,
+		"unit":        this.Unit,
+		"capacity":    this.Capacity,
+		"beds":        this.Beds,
+		"deposit":     this.Deposit,
+		"min_days":    this.Min_days,
+		"max_days":    this.Max_days,
+	}
+
+	// 将所有房屋图片添加到数组中
+	img_urls := []string{}
+	for _, url := range this.Images {
+		img_urls = append(img_urls, AddDomain2Url(url.Url))
+	}
+	house_desc["img_urls"] = img_urls
+
+	// 将所有房屋设施添加到数组中
+	facilities := []int{}
+	for _, facility := range this.Facilities {
+		facilities = append(facilities, facility.Id)
+	}
+	house_desc["facilities"] = facilities
+
+	// 将所有订单添加到数组中
+	comments := []interface{}{}
+	for i := 0; i < 2; i++ {
+		comment := map[string]string{
+			"comment":   "里面居然有屋妖王",
+			"user_name": "Gay伦",
+			"ctime":     "2011-11-11 11:11:11",
+		}
+		comments = append(comments, comment)
+	}
+	house_desc["comments"] = comments
+
+	return house_desc
+}
+
 /* 区域信息 table_name = area */
 type Area struct {
 	Id     int      `json:"aid"`                        //区域编号
