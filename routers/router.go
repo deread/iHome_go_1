@@ -28,7 +28,7 @@ func init() {
 	//更新实名认证信息[post]
 	beego.Router("api/v1.0/user/auth", &controllers.AuthController{}, "post:UpdateAuthinfo")
 	//发布房源信息[post]
-	//beego.Router("api/v1.0/houses", &controllers.HousesController{}, "post:ReleaseHouses")
+	beego.Router("api/v1.0/houses", &controllers.HousesController{}, "post:ReleaseHouses")
 	//上传房源图片信息[post]？为房源ID
 	//beego.Router("api/v1.0/?/images", &controllers.HousesImagesController{}, "post:UploadHousesImage")
 	//请求当前用户已经发布的房源信息[get]
