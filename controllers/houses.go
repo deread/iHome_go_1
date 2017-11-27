@@ -69,7 +69,6 @@ func (this *GetHouseInfoController) GetHouseInfo() {
 	qs.Filter("user_id", resp_user_id).All(&houses)
 	//fmt.Printf("resqs ===>%+v", houses)
 	for _, house := range houses {
-		o.LoadRelated(&house, "Area", "User", "Images", "Facilities")
 		housedata := Struct2house(&house)
 		house_list = append(house_list, housedata)
 
