@@ -1,13 +1,14 @@
 package controllers
 
+//-----------获取搜索房源信息
 import (
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/cache"
 	"github.com/astaxie/beego/orm"
 	"iHome_go_1/models"
 )
 
-//-----------获取搜索房源信息
 type GetHouseSearchInfoController struct {
 	beego.Controller
 }
@@ -58,6 +59,19 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 		return
 	}
 	//尝试从redis中获取数据, 有则返回
+	bm, err := cache.NewCache("redis", `{"key":"ihome_go_1","conn":":6400","dbNum":"0"}`)
+	if err != nil {
+		//resp.Errno = models.RECODE_DBERR
+		//resp.Errmsg = models.RecodeText(models.RECODE_DBERR)
+		//return
+	}
+	if bm.IsExist("house") {
+		resp.Errno = models.RECODE_DATAEXIST
+		resp.Errmsg = models.RecodeText(models.RECODE_DATAEXIST)
+		//bm.Get(
+		//return
+	}
+	//获取redis数据(未完成)
 
 	//如果没有 从mysql中查询
 	housearray := []models.House{}
