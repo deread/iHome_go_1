@@ -36,7 +36,7 @@ func init() {
 	//请求房源详细信息[get] ?-->房源id
 	beego.Router("api/v1.0/houses/:id", &controllers.GetHouseDetailInfoController{}, "get:GetHouseDetailInfo")
 	//请求房屋搜索信息[get]
-	//beego.Router("api/v1.0/houses", &controllers.GetHouseSearchInfoController{}, "get:GetHouseSearchInfo")
+	beego.Router("api/v1.0/houses", &controllers.GetHouseSearchInfoController{}, "get:GetHouseSearchInfo")
 	//请求查看房东/租客订单信息[get]
 	//beego.Router("api/v1.0/orders", &controllers.GetOrderController{}, "get:GetOrder")
 	//房东同意/拒绝订单[put] ? -->订单id
