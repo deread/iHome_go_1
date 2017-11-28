@@ -49,6 +49,10 @@ func (this *UserInfoController) UserInfoGet() {
 		resp.Errmsg = models.RecodeText(resp.Errno)
 		return
 	}
+	//	beego.Info(avatar_url)
+	user.Avatar_url = models.AddDomain2Url(user.Avatar_url)
+
 	resp.Data = user
+	beego.Info(user.Avatar_url)
 	return
 }
