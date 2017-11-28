@@ -77,13 +77,11 @@ func (this *UserController) Reg() {
 	fmt.Printf("request data : %+v\n", request_data)
 
 	//校验信息
-
 	if request_data.Mobile == "" || request_data.Password == "" || request_data.Sms_code == "" {
 		resp.Errno = models.RECODE_REQERR
 		resp.Errmsg = models.RecodeText(resp.Errno)
 		return
 	}
-
 	//对短信进行校验
 
 	//将用户信息入库
@@ -263,7 +261,6 @@ func (this *UserController) GetAvatar() {
 
 	//拼接一个完整的路径
 	avatar_url := models.AddDomain2Url(fileId)
-	//avatar_url := "http://39.106.110.44:8080/" + fileId
 	resp.Data.Url = avatar_url
 	return
 }

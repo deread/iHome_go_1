@@ -49,17 +49,16 @@ func GetAreaName(myid interface{}) (RAreaName string) {
 }
 func Struct2house(this *models.House) interface{} {
 	house_info := map[string]interface{}{
-		"address":   this.Address,
-		"area_name": GetAreaName(this.Area.Id),
-		//"ctime":       this.Ctime.Format("2006-01-02 15:04:05"),
-		"ctime":       this.Ctime,
 		"house_id":    this.Id,
-		"img_url":     this.Images,
-		"order_count": this.Order_count,
-		"price":       this.Price,
-		"room_count":  this.Room_count,
 		"title":       this.Title,
+		"price":       this.Price,
+		"area_name":   this.Area.Name,
+		"img_url":     models.AddDomain2Url(this.Index_image_url),
+		"room_count":  this.Room_count,
+		"order_count": this.Order_count,
+		"address":     this.Address,
 		"user_avatar": models.AddDomain2Url(this.User.Avatar_url),
+		"ctime":       this.Ctime.Format("2006-01-02 15:04:05"),
 	}
 	return house_info
 }
@@ -85,8 +84,13 @@ func (this *GetHouseInfoController) GetHouseInfo() {
 	house_list := []interface{}{}
 	qs := o.QueryTable("house")
 	qs.Filter("user_id", resp_user_id).All(&houses)
+
 	//fmt.Printf("resqs ===>%+v", houses)
 	for _, house := range houses {
+		o.LoadRelated(&house, "Area")
+		o.LoadRelated(&house, "User")
+		o.LoadRelated(&house, "Images")
+		o.LoadRelated(&house, "Facilities")
 		housedata := Struct2house(&house)
 		house_list = append(house_list, housedata)
 

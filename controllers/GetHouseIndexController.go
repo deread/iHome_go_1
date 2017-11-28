@@ -51,7 +51,16 @@ func (this *GetHouseIndexController) GetHouseIndex() {
 	_, err = o.QueryTable("house").Limit(models.HOME_PAGE_MAX_HOUSES).All(&houses)
 	if err == nil {
 		for _, house := range houses {
+			o.LoadRelated(&house, "Area")
+			o.LoadRelated(&house, "User")
+			o.LoadRelated(&house, "Images")
+			o.LoadRelated(&house, "Facilities")
+			//添加image_url的ip:port
+			fmt.Println("Index_image_url-->", house.Index_image_url)
+			//struct -->house类型
 			housedata := Struct2house(&house)
+
+			fmt.Println("--=--==-=-=", housedata)
 			rData = append(rData, housedata)
 		}
 	}
