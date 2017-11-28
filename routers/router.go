@@ -30,13 +30,15 @@ func init() {
 	//发布房源信息[post]
 	beego.Router("api/v1.0/houses", &controllers.HousesController{}, "post:ReleaseHouses")
 	//上传房源图片信息[post]？为房源ID
-	//beego.Router("api/v1.0/?/images", &controllers.HousesImagesController{}, "post:UploadHousesImage")
+	beego.Router("api/v1.0/houses/?:id/images", &controllers.HouseImagesController{}, "post:UploadHouseImages")
 	//请求当前用户已经发布的房源信息[get]
 	beego.Router("api/v1.0/user/houses", &controllers.GetHouseInfoController{}, "get:GetHouseInfo")
 	//请求房源详细信息[get] ?-->房源id
 	beego.Router("api/v1.0/houses/:id", &controllers.GetHouseDetailInfoController{}, "get:GetHouseDetailInfo")
 	//请求房屋搜索信息[get]
-	//beego.Router("api/v1.0/houses", &controllers.GetHouseSearchInfoController{}, "get:GetHouseSearchInfo")
+	beego.Router("api/v1.0/houses", &controllers.GetHouseSearchInfoController{}, "get:GetHouseSearchInfo")
+	//获取houses/index数据
+	beego.Router("api/v1.0/houses/index", &controllers.GetHouseIndexController{}, "get:GetHouseIndex")
 	//请求查看房东/租客订单信息[get]
 	//beego.Router("api/v1.0/orders", &controllers.GetOrderController{}, "get:GetOrder")
 	//房东同意/拒绝订单[put] ? -->订单id
