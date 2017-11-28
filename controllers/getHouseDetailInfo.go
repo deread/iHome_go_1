@@ -58,7 +58,7 @@ func (this *GetHouseDetailInfoController) GetHouseDetailInfo() {
 	}
 
 	// 4. 从redis通过房屋Id获取房屋信息
-	redis_conn, err := cache.NewCache("redis", `{"key": "iHome_go", "conn": "127.0.0.1:50000", "dbNum": "0"}`)
+	redis_conn, err := cache.NewCache("redis", `{"key": "iHome_go", "conn": "127.0.0.1:6400", "dbNum": "0"}`)
 	if err != nil {
 
 		// 4.1 没有获取到Redis缓存表示redis有问题
