@@ -39,12 +39,12 @@ func changestruct(this *models.OrderHouse) interface{} {
 	orderInfo := map[string]interface{}{
 		"amount":     this.Amount,
 		"comment":    this.Comment,
-		"ctime":      this.Ctime,
+		"ctime":      this.Ctime.Format("2006-01-02 15:04:05"),
 		"days":       this.Days,
-		"end_date":   this.End_date,
+		"end_date":   this.End_date.Format("2006-01-02 15:04:05"),
 		"img_url":    models.AddDomain2Url(this.House.Index_image_url),
 		"order_id":   this.Id,
-		"start_date": this.Begin_date,
+		"start_date": this.Begin_date.Format("2006-01-02 15:04:05"),
 		"status":     this.Status,
 		"title":      this.House.Title,
 	}
