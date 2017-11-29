@@ -83,12 +83,15 @@ func (this *GetOrderController) GetOrder() {
 		houses := []models.House{}
 		o.QueryTable("house").Filter("user_id", resp_user_id).OrderBy("ctime").All(&houses)
 		var houseids []int
-		for houseid, _ := range houses {
-			houseids = append(houseids, houseid)
+		for _, house := range houses {
+			houseids = append(houseids, house.Id)
+			beego.Info(house.Id)
 		}
 		o.QueryTable("order_house").Filter("house_id__in", houseids).OrderBy("ctime").All(&oreders)
 	}
+
 	for _, oreder := range oreders {
+		o.LoadRelated(&oreder, "house")
 		housedata := changestruct(&oreder)
 		houselist = append(houselist, housedata)
 
