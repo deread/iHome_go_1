@@ -2,11 +2,13 @@ package controllers
 
 //-----------获取搜索房源信息
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/cache"
 	"github.com/astaxie/beego/orm"
 	"iHome_go_1/models"
+	"time"
 )
 
 type GetHouseSearchInfoController struct {
@@ -35,6 +37,7 @@ func (this *GetHouseSearchInfoController) RetData(resp interface{}) {
 }
 func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 	resp := RespHouseSearchInfo{Errno: models.RECODE_OK, Errmsg: models.RecodeText(models.RECODE_OK)}
+	defer this.RetData(&resp)
 	//获取前端的参数
 	//var ReqData GetStructHouses
 	var aid int
@@ -65,13 +68,20 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 		//resp.Errmsg = models.RecodeText(models.RECODE_DBERR)
 		//return
 	}
-	if bm.IsExist("house") {
-		resp.Errno = models.RECODE_DATAEXIST
-		resp.Errmsg = models.RecodeText(models.RECODE_DATAEXIST)
-		//bm.Get(
-		//return
-	}
 	//获取redis数据(未完成)
+	if bm.IsExist("house") {
+		//resp.Errno = models.RECODE_DATAEXIST
+		//resp.Errmsg = models.RecodeText(models.RECODE_DATAEXIST)
+		redisdata := bm.Get("house")
+		if redisdata != nil {
+			fmt.Println("==========get house info from redis==============")
+			var respredisdata interface{}
+			json.Unmarshal(redisdata.([]byte), &respredisdata)
+			fmt.Printf("redis get housesss....%+v\n", respredisdata)
+			resp.Data = respredisdata
+			return
+		}
+	}
 
 	//如果没有 从mysql中查询
 	housearray := []models.House{}
@@ -103,5 +113,14 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 	//返回前端
 	fmt.Printf("this is house info--==========>%+v\n", data)
 
-	defer this.RetData(&resp)
+	//存入redis用于下次访问
+	//转成json字符串
+	js_data, _ := json.Marshal(data)
+	err = bm.Put("house", js_data, 10*time.Second)
+	if err != nil {
+		resp.Errno = models.RECODE_DATAERR
+		resp.Errmsg = models.RecodeText(resp.Errno)
+		return
+	}
+	return
 }
