@@ -46,6 +46,6 @@ func init() {
 	//用户评价订单信息 [put] ?-->订单Id
 	//beego.Router("api/v1.0/orders/?/comment", &controllers.PutOrderCommController{}, "put:PutOrderComm")
 	//发布订单[post]
-	//beego.Router("api/v1.0/orders",&controllers.PostOrderReleaseController{},"post:PostOrderRelease")
+	beego.Router("api/v1.0/orders", &controllers.PostOrderController{}, "post:PostOrder")
 
 }
