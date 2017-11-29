@@ -136,6 +136,7 @@ func (this *UserController) Login() {
 	var user models.User
 
 	o := orm.NewOrm()
+
 	//select * from user where mobile = request_data.mobile
 	if err := o.QueryTable("user").Filter("mobile", request_data.Mobile).One(&user); err == orm.ErrNoRows {
 		//表示没有任何数据

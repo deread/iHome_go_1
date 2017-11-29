@@ -42,8 +42,10 @@ func init() {
 	//请求查看房东/租客订单信息[get]
 	//beego.Router("api/v1.0/orders", &controllers.GetOrderController{}, "get:GetOrder")
 	//房东同意/拒绝订单[put] ? -->订单id
-	//beego.Router("api/v1.0/orders/?/status", &controllers.PutOrderStatController{}, "put:PutOrderStat")
+	beego.Router("api/v1.0/orders/:id/status", &controllers.PutOrderStatController{}, "put:PutOrderStat")
 	//用户评价订单信息 [put] ?-->订单Id
 	//beego.Router("api/v1.0/orders/?/comment", &controllers.PutOrderCommController{}, "put:PutOrderComm")
+	//发布订单[post]
+	//beego.Router("api/v1.0/orders",&controllers.PostOrderReleaseController{},"post:PostOrderRelease")
 
 }

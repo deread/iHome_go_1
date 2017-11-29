@@ -87,6 +87,10 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 
 	house_list := []interface{}{}
 	for _, house := range housearray {
+		o.LoadRelated(&house, "Area")
+		o.LoadRelated(&house, "User")
+		o.LoadRelated(&house, "Images")
+		o.LoadRelated(&house, "Facilities")
 		housedata := Struct2house(&house)
 		house_list = append(house_list, housedata)
 	}
