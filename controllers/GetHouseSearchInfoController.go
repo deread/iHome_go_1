@@ -70,14 +70,12 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 	}
 	//获取redis数据(未完成)
 	if bm.IsExist("house") {
-		//resp.Errno = models.RECODE_DATAEXIST
-		//resp.Errmsg = models.RecodeText(models.RECODE_DATAEXIST)
 		redisdata := bm.Get("house")
 		if redisdata != nil {
 			fmt.Println("==========get house info from redis==============")
 			var respredisdata interface{}
 			json.Unmarshal(redisdata.([]byte), &respredisdata)
-			fmt.Printf("redis get housesss....%+v\n", respredisdata)
+			//	fmt.Printf("redis get housesss....%+v\n", respredisdata)
 			resp.Data = respredisdata
 			return
 		}
@@ -110,9 +108,7 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 	data["total_page"] = total_page
 	data["current_page"] = current_page
 	resp.Data = data
-	//返回前端
-	fmt.Printf("this is house info--==========>%+v\n", data)
-
+	//fmt.Printf("this is house info--==========>%+v\n", data)
 	//存入redis用于下次访问
 	//转成json字符串
 	js_data, _ := json.Marshal(data)
@@ -122,5 +118,6 @@ func (this *GetHouseSearchInfoController) GetHouseSearchInfo() {
 		resp.Errmsg = models.RecodeText(resp.Errno)
 		return
 	}
+	//返回前端
 	return
 }

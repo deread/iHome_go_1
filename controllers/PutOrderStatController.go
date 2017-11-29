@@ -67,7 +67,7 @@ func (this *PutOrderStatController) PutOrderStat() {
 		return
 	}
 	//校验订单的user_id是否是当前用户的user_id
-	if v != OrderHouse.User {
+	if v != OrderHouse.User.Id {
 		resp.Errno = models.RECODE_USERERR
 		resp.Errmsg = models.RecodeText(resp.Errno)
 		return
@@ -81,10 +81,10 @@ func (this *PutOrderStatController) PutOrderStat() {
 	}
 	//if action=accept-->更换订单status状态WAIT_COMMIT等待用户评价
 	if action.Action == "accept" {
-		OrderHouse.Status = "COMMENT"
+		OrderHouse.Status = models.ORDER_STATUS_WAIT_COMMENT
 		//else  action=reject-->更换订单状态status状态REJECT
 	} else if action.Action == "reject" {
-		OrderHouse.Status = "REJECTED"
+		OrderHouse.Status = models.ORDER_STATUS_REJECTED
 		//从url中获取reason参数字段
 		Rjct_reason := this.Input().Get("reason")
 
